@@ -11,6 +11,10 @@ const exerciseSchema = new Schema({
     type:String,
     required: true,
     maxLength:256
+  },
+  caloriesPerRep:{
+    type:Number,
+    required: true
   }
 });
 

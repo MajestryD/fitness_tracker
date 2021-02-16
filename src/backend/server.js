@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const exerciseRouter = require('./route/exercise');
 const userRouter = require('./route/user');
+const workoutRouter = require('./route/workout');
 const cors = require('cors');
 const MongoDBStore = require('connect-mongodb-session')(session);
 
@@ -27,17 +28,28 @@ connection.once('open', ()=>{
   console.log("MongoDB connected");
 })
 
-app.use(cors());
+app.use(cors({
+            origin: [
+              'http://localhost:3000',
+              'https://localhost:3000'
+            ],
+            credentials: true,
+            exposedHeaders: ['set-cookie']
+        }));
 app.use(express.json());
-app.use('/exercise', exerciseRouter);
-app.use('/user', userRouter);
 app.use(session({
   secret: process.env.SESSION_SERCRET,
   cookie:{
-    maxAge: 1000*60*60*24
+    maxAge: 1000*60,
+    httpOnly: false,
+    sameSite:false
   },
   store: store,
   resave:false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  unset: 'destroy'
 }));
+app.use('/workout',workoutRouter);
+app.use('/exercise', exerciseRouter);
+app.use('/user', userRouter);
 app.listen(PORT, () => console.log(`Server is running at PORT ${PORT}`));
