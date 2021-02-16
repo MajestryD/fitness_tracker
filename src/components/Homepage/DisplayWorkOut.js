@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import Workouts from './Workouts'
 
 export default class DisplayWorkOut extends Component {
 
@@ -24,9 +25,7 @@ export default class DisplayWorkOut extends Component {
   render(){
     return(
       <div>
-        this.state.workout.map(function(workout) =>{
-          <div> {workout._idS}</div>
-        })
+      {this.State.workout.map(ex => <Workouts theme={ex.theme} ExerciseSet = {ex.exerciseSet}/>)}
       </div>
     );
   }
