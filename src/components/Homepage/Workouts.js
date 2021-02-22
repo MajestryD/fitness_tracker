@@ -1,14 +1,13 @@
 import React from 'react';
+import ExerciseSet from './ExerciseSet';
 
-function ExerciseSet(props){
-  return <h1> props.ExerciseName </h1>
-}
-
-export default function Workouts(props){
+function workouts(props){
   return (
     <div>
-      <div> props.theme </div>
-      props.ExerciseSet.map(set => <ExerciseSet ExerciseName = {set}.ExerciseName/>)
+      <div> {props.theme} </div>
+      <ExerciseSet es = {props.exerciseSet}/>
     </div>
   )
 };
+
+export default workouts;

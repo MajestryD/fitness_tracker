@@ -1,7 +1,9 @@
 import React,{Component} from 'react';
 import FacebookLogin from './logIn/facebookLogIn';
 import axios from 'axios';
-import cookie from 'react-cookies';
+import Nav from './NavBar/Nav';
+//import cookie from 'react-cookies';
+import '../essential/css/signIn.min.css'
 
 axios.defaults.withCredentials = true;
 
@@ -12,51 +14,33 @@ export default class SignIn extends Component{
     this.responseFacebook = this.responseFacebook.bind(this);
     this.componentClicked = this.componentClicked.bind(this);
     this.logOut = this.logOut.bind(this);
-
-    this.state = {
-      currentUser:'',
-      currentUserId:'',
-      isLoggedIn: false,
-      email:'',
-      picture: ''
-    }
   }
 
-  componentDidMount = () => {
-    console.log(cookie.load('connect.sid'));
-  }
-
-  responseFacebook = (res) =>{
-    const user = {
+  responseFacebook = async (res) =>{
+    var user = {
       name: res.name,
       graphDomain: res.graphDomain,
       domainId: res.id
     };
-    axios.post('http://localhost:5000/user/login',user);
+    var item;
+    await axios.post('http://localhost:5000/user/login',user)
+    .then(resp => user.userId = resp.data.userId);
 
+    console.log(item);
     if(res.status != "unknown"){
-      this.setState({
-        isLoggedIn : true,
-        currentUserId : res.id,
-        currentUser : res.name,
-        email : res.email,
-        picture : res.picture.data.url
-      });
-      const payload = this.state;
-      console.log(payload);
+      this.props.history.push({
+        pathname: '/Account',
+        state:{currentUser: res.name, userId: user.userId}
+      })
 
     }else{
-      console.alert("access denied");
+      this.props.history.push('/')
+      console.error("access denied");
     }
 
   }
 
   componentClicked = () =>{
-    if(this.state.isLoggedIn){
-      console.log("You've logged in")
-    }else{
-      console.log("You've tried to log in")
-    }
   }
 
   logOut = (e) =>{
@@ -74,33 +58,18 @@ export default class SignIn extends Component{
   }
 
   render(){
-    let logInComponent;
-
-    if(this.state.isLoggedIn){
-      logInComponent = (
-        <div>
-          <p> Name: {this.state.currentUser}</p>
-          <p> ID: {this.state.currentUserId}</p>
-          <p> Email: {this.state.email}</p>
-          <img src={this.state.picture} alt="Your picture"/>
-          <button onClick ={this.logOut}> Log Out </button>
-      </div>
-
-
-      )
-    }else{
-      logInComponent = (
-        <FacebookLogin
-          responseFacebook = {this.responseFacebook}
-          componentClicked = {this.componentClicked}
-        />
-      )
-    }
 
     return(
       <div>
-        {logInComponent}
+        <Nav paths = {[{value:"Home", path:"/"} , {value:"SignIn", path:"/signin"} ]}/>
+        <div className="signInContainer">
+          <FacebookLogin
+            responseFacebook = {this.responseFacebook}
+            componentClicked = {this.componentClicked}
+          />
+        </div>
       </div>
+
     )
   };
 }

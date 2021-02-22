@@ -42,15 +42,15 @@ router.route('/login').post(async(req,res)=>{
         domainId
       });
       newUser.save();
-      req.session.userName = name ;
-      console.log(req.session);
+      req.session.userName = name;
+      req.session.userId = user._id;
+      console.log(user._id);
       res.send(req.session);
-      console.log('everything done here');
     }else{
+      req.session.userId = user._id;
       req.session.userName = name ;
-      console.log(req.session);
+      console.log(user._id);
       res.send(req.session);
-      console.log('everything done here 2');
     }
   })
   .catch(error => res.status(400).json('Error: ' + error));
@@ -69,7 +69,5 @@ router.route('/delete/:domainId').delete(async(req,res)=>{
   .then(user => res.json(user.name + ' has been deleted'))
   .catch(error => res.status(400).json('Error: '+ error));
 })
-
-
 
 module.exports = router;

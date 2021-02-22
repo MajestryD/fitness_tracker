@@ -11,7 +11,7 @@ export default class DisplayWorkOut extends Component {
     }
   }
   componentDidMount = () =>{
-    axios.get('http://localhost:5000/workout/')
+     axios.get('http://localhost:5000/workout/'+ this.props.userId)
     .then(res =>{
       if(res.data.length > 0){
         this.setState({
@@ -25,7 +25,11 @@ export default class DisplayWorkOut extends Component {
   render(){
     return(
       <div>
-      {this.State.workout.map(ex => <Workouts theme={ex.theme} ExerciseSet = {ex.exerciseSet}/>)}
+        {
+          this.state.workout.map(function(workout){
+            return <Workouts key={workout._id} theme={workout.theme} exerciseSet ={workout.exerciseSet}/>;
+          })
+        }
       </div>
     );
   }

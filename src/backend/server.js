@@ -52,4 +52,16 @@ app.use(session({
 app.use('/workout',workoutRouter);
 app.use('/exercise', exerciseRouter);
 app.use('/user', userRouter);
+app.get('/se', async (req, res) => {
+  if(req.session){
+
+    const everything = {
+      "currentUser": req.session.userName,
+      "userId": req.session.userId
+    }
+    await res.send(everything);
+  }
+})
+
+
 app.listen(PORT, () => console.log(`Server is running at PORT ${PORT}`));

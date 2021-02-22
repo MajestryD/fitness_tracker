@@ -1,0 +1,33 @@
+.navBar{
+  display:flex;
+  justify-content: space-between;
+  flex-flow: row;
+  height: 50px;
+  border-bottom: 2px solid grey;
+  align-items: center;
+
+  .logo{
+    text-align: center;
+    width:100px;
+  }
+
+  .navLinks{
+    display: flex;
+    justify-content: space-around;
+    flex-flow: row;
+    width:35%;
+
+    .links{
+      list-style:none;
+      text-decoration: none;
+      width: auto;
+      max-width: 100px;
+      text-align: center;
+      color:green;
+    }
+    .links:hover{
+      color: blue;
+    }
+  }
+
+}
