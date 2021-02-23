@@ -8,14 +8,22 @@ router.route('/').get(async(req,res)=>{
   .catch(error => res.status(400).json('Error' + error));
 })
 
+router.route('/:id').get(async(req,res)=>{
+  await Exercise.findById(req.params.id)
+  .then(exercise => res.json(exercise))
+  .catch(error => res.status(400).json('Error' + error));
+})
+
 // Add exercise
 router.route('/add').post((req, res)=>{
   const name = req.body.name;
   const description = req.body.description;
+  const theme = req.body.theme;
 
   const newExercise = new Exercise({
     name,
-    description
+    description,
+    theme
   });
 
   newExercise.save()
@@ -38,6 +46,13 @@ router.route('/:name').get(async(req,res)=>{
   .catch(error => res.status(400).json('Error '+ error));
 })
 
+
+//Delete by id
+router.route('/delete/id/:uid').delete((req,res)=>{
+   Exercise.findByIdAndDelete(req.params.uid)
+  .then(exercise => res.json(exercise))
+  .catch(error => res.status(400).json('Error '+ error));
+})
 
 
 module.exports = router;

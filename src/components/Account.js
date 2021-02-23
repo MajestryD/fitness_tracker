@@ -3,7 +3,10 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import '../essential/css/Account.min.css';
 import Nav from './NavBar/Nav';
+import AddExercise from './Homepage/AddExercise';
+import DeleteExercise from './Homepage/DeleteExercise';
 import Workouts from './Homepage/DisplayWorkOut';
+import AddUserWorkout from './Homepage/AddUserWorkout';
 
 export default class Account extends Component{
 
@@ -33,6 +36,9 @@ export default class Account extends Component{
         <div className="accountContainer">
           <h1> {this.state.currentUser}</h1>
           <Workouts userId={this.state.userId}/>
+          <AddExercise/>
+          <DeleteExercise/>
+          <AddUserWorkout currentUser = {this.state.currentUser} userId ={this.state.userId}/>
         </div>
       </div>
     )
